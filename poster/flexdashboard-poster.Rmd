@@ -1,0 +1,204 @@
+---
+title: "**Short title:** Interactive graphics for FDA"
+output: 
+  flexdashboard::flex_dashboard:
+    self_contained: false
+    orientation: rows
+    source: embed
+    social: menu
+bibliography: ../references/references.bib
+runtime: shiny
+---
+
+
+```{r setup, include=FALSE}
+library(package = flexdashboard)
+library(package = tidyverse)
+library(package = shiny)
+
+# Setup knitr
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE,
+  # Save all figures in the output dir, you have to include them explicitly
+  # with an <img> tag
+  fig.path = "../output/img/", fig.show = "hide"
+)
+```
+
+
+
+
+
+## Row 1 {data-height=15}
+
+###
+
+
+<table style="width:100%">
+<tr>
+  <td><center><h3>
+  **Communicating results of functional data analyses with interactive graphics**
+  </h3></center></td>
+  <td rowspan="2">
+  <img src="img/footer.png" style="width:256px"></img>
+  </td>
+</tr>
+<tr><td><center><a
+  title="Columbia University Mailman School of Public Health"
+  href="mailto:jw3134@cumc.columbia.edu?Subject=Poster%20subject"
+  target="_top">
+  Julia Wrobel
+  </a></center></td>
+</tr>
+</table> 
+
+<hr>
+
+**Background:** Although there are established graphics that accompany the most commons functional data analyses, generating these graphics can be cumbersome and time consuming. Often, the barriers to visualization inhibit useful exploratory data analyses and prevent the development of intuition for a method and its application to a particular dataset. The `R` package `refund.shiny` was developed to address these issues for several of the most common methods for functional data. After conducting an analysis, the `plot_shiny()` function is used to generate an interactive visualization environment that contains several distinct graphics, many of which are updated in response to user input. These visualizations reduce the burden of exploratory analyses and can serve as a useful tool for the communication of results to non-statisticians.
+
+
+## Row 2 {data-height=75}
+
+### **Introduction**
+
+#### What is functional data analysis?
+
+Functional data analysis (FDA) has become a popular and useful framework for applications in which the unit of measurement is a function, curve or image. 
+
+**Examples of functional data**
+
+Some examples of functional data include **FitBit** collections of activity over time, studies of spatial patterns in feeding behavior of pigs, and longitudinal studies of drug use. Other examples of functional data are below.
+
+
+**Fig. 1: Canadian weather data.**
+
+<img src="img/canadaPlot.png" style="width:90%"></img>
+
+
+**Fig. 2: Tecator meat samples.**
+<img src="img/water.png" style="width:90%"></img>
+
+<hr>
+
+**Common functional data analyses**
+
+Functional data analyses apply statistical techniques to understand functional data, and many common statistical tools have been extended to the functional data setting.
+
+#### Functional principal components analysis 
+
+FPCA is the most common form of functional data analysis, and allows us to pull out the main population-level patterns present in functional data while reducing the overall dimension. FPCA decomposes observations into population-level basis functions and subject-specific scores.
+
+* The basis functions $\psi_{k}(t)$ are ordered and indicate the largest directions of variability in the dataset
+* The scores $c_{ik}$ indicate how much basis function $\psi_{k}(t)$ contributes to subject i’s data
+
+$$Y_i(t) = \mu(t) + \sum_{k=1}^{K} c_{ik}\psi_{k}(t) + \epsilon_i(t)$$
+
+#### Multilevel FPCA
+
+Multilevel functional principal component analysis (MFPCA) extends the ideas of FPCA to functional data with a multilevel structure- for example multple subjects with multiple visits per subject.
+
+* scores and $\psi_k$ indexed bt (1) are for level 1, which represents subject-specific variability
+* level 2 represents subject-visit specific variability
+* $\eta_j(t)$ gives us visit-specific means
+
+$$Y_{ij}(t) = \mu(t) + \eta_j(t) + \sum_{k_1=1}^{K_1} 	c_{ik}^{(1)}\psi_{k}^{(1)}(t) + \sum_{k_2=1}^{K_2}c^{(2)}_{ijk}\psi_{k}^{(2)}(t) + \epsilon_{ij}(t)$$
+
+#### Function-on-scalar regression
+
+FoSR allows you to incorporate a length $p$ vector of scalar covariates $\mathbf{x}_i = [x_{i1},...x_{ip}]$ into a model with a functional outcome.
+
+$$Y_{i}(t)  =  \beta_{0}(t) + \sum_{k = 1}^{p} x_{ik} \beta_{k}(t) + \epsilon_{i}(t)$$
+
+<hr>
+#### The `refund.shiny` framework
+
+Our `R` package, `refund.shiny` leverages the interactive graphics capabilities provided by RStudio's `shiny` framework and functional data analysis software in the `refund` package. Conceptually, here is the work flow:
+
+1. Functions in `refund` produce objects of a particular class
+    + FPCA: `fpca` objects
+    + Multilevel FPCA:  `mfpca` objects
+    + Function on scalar regression: `fosr` objects 
+1. `plot_shiny()` is the generic plotting function from `refund.shiny` used with each class of analysis
+1. Behavior of `plot_shiny()` depends on class of input object
+
+### **The refund.shiny package**
+
+The code below shows how you would use our package:
+
+```{r refund_shiny_demo, eval = FALSE, echo = TRUE}
+library(fda)
+canadaWeather = t(CanadianWeather$dailyAv[,,"Temperature.C"])
+
+library(refund)
+fpca.canada = fpca.sc(Y=canadaWeather, npc = 4)
+
+library(refund.shiny)
+plot_shiny(obj = fpca.canada)
+
+
+```
+
+<hr>
+
+Here are a few screenshots of what our software looks like:
+
+#### Functional principal components analysis
+
+<img src="img/tab1_fpca.png" style="width:100%"></img>
+
+<br>
+
+#### Multilevel FPCA
+
+<img src="img/mfpccTab1.png" style="width:100%"></img>
+
+<br>
+
+#### Function-on-scalar regression
+
+<img src="img/FoSR_tab3.png" style="width:100%"></img>
+
+<br>
+
+## Row 3 {data-height=10} 
+
+### **Acknowledgements and Resources** {data-width=50}
+
+**Resources**
+
+* Our paper about the `refund.shiny` package can be accessed here:  [Interactive graphics for functional data analyses](https://arxiv.org/pdf/1602.04091.pdf) 
+* Package can be downloaded from CRAN and GitHub
+
+**Acknowledgements**
+
+Thanks to my advisor Jeff Goldsmith for his guidance on this project! Funding sources include:
+
+* NSF DMS 0454942
+* NIH R01NS085211 and NIH R01MH086633   
+* NHLBI R01HL123407
+  NIBIB R21EB018917
+
+
+### {data-width=50 .small}
+
+**Contact Information**
+
+#### Contact information
+
+Julia Wrobel  
+<a
+  title="Columbia University Mailman School of Public Health"
+  href="mailto:jw3134@cumc.columbia.edu?Subject=Influenza%20incidence%20Guatemala"
+  target="_top"
+>jw3134@cumc.columbia.edu</a>  
+<a
+  title="GitHub profile"
+  href="https://github.com/julia-wrobel"
+  target="_blank"
+>https://github.com/julia-wrobel</a> <br>
+<a
+  title="personal website"
+  href="http://juliawrobel.com"
+  target="_blank"
+>http://juliawrobel.com</a>
+
