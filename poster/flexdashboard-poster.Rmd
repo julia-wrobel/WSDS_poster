@@ -25,10 +25,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-
-
-
-
 ## Row 1 {data-height=15}
 
 ###
@@ -56,6 +52,15 @@ knitr::opts_chunk$set(
 
 **Background:** Although there are established graphics that accompany the most commons functional data analyses, generating these graphics can be cumbersome and time consuming. Often, the barriers to visualization inhibit useful exploratory data analyses and prevent the development of intuition for a method and its application to a particular dataset. The `R` package `refund.shiny` was developed to address these issues for several of the most common methods for functional data. After conducting an analysis, the `plot_shiny()` function is used to generate an interactive visualization environment that contains several distinct graphics, many of which are updated in response to user input. These visualizations reduce the burden of exploratory analyses and can serve as a useful tool for the communication of results to non-statisticians.
 
+```{r dti_fig}
+library(refund)
+library(refund.shiny)
+
+Y = as_refundObj(DTI$cca)
+ggplot(Y, aes(index, value, group = id)) + geom_path(alpha = 0.2) +
+  labs(x = "Position along corpus callosum", y = "Fractional Anisotropy") + theme_bw()
+
+```
 
 ## Row 2 {data-height=75}
 
@@ -75,8 +80,11 @@ Some examples of functional data include **FitBit** collections of activity over
 <img src="img/canadaPlot.png" style="width:90%"></img>
 
 
-**Fig. 2: Tecator meat samples.**
-<img src="img/water.png" style="width:90%"></img>
+**Fig. 2: Diffusion Tensor Imaging data.**
+
+DTI is a magnetic resonance imaging modality that measures diffusion of water in the brain; Measures white matter tract integrity for multple sclerosis patients.
+ 
+<img src="img/dti_fig-1.png" style="width:90%"></img>
 
 <hr>
 
