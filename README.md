@@ -1,10 +1,11 @@
 # Flexdashboard poster
 
-Minimal template for preparing a conference poster using rmarkdown.
-Check out
-[`output/poster.png`](https://github.com/odeleongt/flexdashboard-poster/blob/develop/output/poster.png)
-or the [html preview](https://odeleongt.github.io/flexdashboard-poster/)
-for more details.
+Women in Statistics and Data Science (2017) conference poster using rmarkdown.
+
+
+
+Built with the help of [this great template](https://odeleongt.github.io/flexdashboard-poster/).
+
 
 
 
@@ -25,11 +26,11 @@ and a working installation of `imagemagick`.
 
 In order to use this poster template, you need to:
 
-1. Clone [`odeleongt/flexdashboard-poster`](https://github.com/odeleongt/flexdashboard-poster)
-  from github
+1. Clone [`julia-wrobel/WSDS_poster`](https://github.com/julia-wrobel/WSDS_poster)
+from github
 1. Install the required packages  
-  `install.packages("rmarkdown", "flexdashboard", "webshot")`
+`install.packages("rmarkdown", "flexdashboard", "webshot")`
 1. Install the PhantomJS library  
-  `webshot::install_phantomjs()`
+`webshot::install_phantomjs()`
 1. Edit the template to fit your needs
 1. Run `scripts/render-poster.R`
